@@ -32,10 +32,19 @@ namespace ShopList
         {
             InitializeComponent();
         }
+            
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            Food newFood = new Food(textBox1.Text.Trim(), int.Parse(textBox3.Text), int.Parse(textBox2.Text), textBox5.Text);
+            FoodList.Add(newFood);
+            checkedListBox1.Items.Add(newFood.Name + " " + newFood.Price.ToString() + "p." + newFood.Quantity.ToString() +" "+ newFood.Mesurement);
+            int sum=0;
+            foreach (Food food in FoodList)
+            {
+                sum+=food.Price;
+            }
+            label4.Text = "Итоговая стоимость: " + sum.ToString() + "р.";
         }
 
         private void Form1_Load(object sender, EventArgs e)
