@@ -116,5 +116,15 @@ namespace ShopList
             }
             return listToPrint.Count;
         }
+
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button==MouseButtons.Right)
+            {
+                Form2 f = new Form2();
+                f.SetDesktopLocation(MousePosition.X, MousePosition.Y);
+                f.ShowDialog();
+            }
+        }
     }
 }
