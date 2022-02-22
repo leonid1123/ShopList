@@ -14,19 +14,25 @@ namespace ShopList
     {
         class Food
         {
-            public string Name { set; get; }
-            public decimal Price { set; get; }
-            public decimal Quantity { set; get; }
-            public string Mesurement { set; get; }
+            private string name;
+            private decimal price;
+            private decimal quantity;
+            private string mesurement;
 
-            public Food(string name, decimal price, decimal quantity, string mesurenemt)
+            public Food(string name, decimal price, decimal quantity, string mesurement)
             {
-                Name = name;
-                Price = price;
-                Quantity = quantity;
-                Mesurement = mesurenemt;
+                this.name = name;
+                this.price = price;
+                this.quantity = quantity;
+                this.mesurement = mesurement;
             }
+
+            public string Name { get => name; set => name = value; }
+            public decimal Price { get => price; set => price = value; }
+            public decimal Quantity { get => quantity; set => quantity = value; }
+            public string Mesurement { get => mesurement; set => mesurement = value; }
         }
+
         List<Food> FoodList = new List<Food>();
         public Form1()
         {
@@ -36,7 +42,6 @@ namespace ShopList
 
         private void button1_Click(object sender, EventArgs e)
         {
-            decimal sum = 0;
             if (textBox1.Text.Trim().Length > 0 && numericUpDown1.Value > 0 && numericUpDown2.Value > 0)
             {
                 bool gotDouble = false;
@@ -46,14 +51,12 @@ namespace ShopList
                     {
                         gotDouble = true;
                     }
-                    Console.WriteLine(food.Name);
-                    Console.WriteLine(gotDouble);
                 }
                 if (!gotDouble)
                 {
                     Food newFood = new Food(textBox1.Text.Trim(), numericUpDown2.Value, numericUpDown1.Value, comboBox1.Text);
                     FoodList.Add(newFood);
-                    checkedListBox1.Items.Add(newFood.Name + " " + newFood.Price.ToString() + "p." + newFood.Quantity.ToString() + " " + newFood.Mesurement);
+                    PrintList(FoodList);
 
                 }
                 else
@@ -65,12 +68,8 @@ namespace ShopList
                             food.Quantity += numericUpDown1.Value;
                         }
                     }
-                } //TODO написать метод для обновления списка и привязать его ко всем ситуациям
-                foreach (Food food in FoodList)
-                {
-                    sum += food.Price * food.Quantity;
                 }
-                label4.Text = "Итоговая стоимость: " + sum.ToString() + "р.";
+                TotalPrice(FoodList);
             }
         }
 
@@ -85,13 +84,37 @@ namespace ShopList
             FoodList.Add(nuts);
             FoodList.Add(nuts);
 
-            decimal sum = 0;
-            foreach (Food food in FoodList)
+            TotalPrice(FoodList);
+            PrintList(FoodList);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (checkedListBox1.SelectedIndex > -1)
             {
-                checkedListBox1.Items.Add(food.Name + " " + food.Price.ToString() + "p." + food.Quantity.ToString() + food.Mesurement);
-                sum += food.Price;
+                FoodList.RemoveAt(checkedListBox1.SelectedIndex);
+                checkedListBox1.Items.RemoveAt(checkedListBox1.SelectedIndex);
             }
-            label4.Text = "Итоговая стоимость: " + sum.ToString() + "р.";
+            TotalPrice(FoodList);
+        }
+        decimal TotalPrice(List<Food> listToCalculate)
+        {
+            decimal sum = 0;
+            foreach (Food food in listToCalculate)
+            {
+                sum += food.Price * food.Quantity;
+            }
+            label4.Text = "Итоговая стоимость: " + sum.ToString();
+            return sum;
+        }
+        int PrintList(List<Food> listToPrint)
+        {
+            checkedListBox1.Items.Clear();
+            foreach (Food food in listToPrint)
+            {
+                checkedListBox1.Items.Add(food.Name + " " + food.Price.ToString() + "p." + food.Quantity.ToString() + " " + food.Mesurement);
+            }
+            return listToPrint.Count;
         }
     }
 }
