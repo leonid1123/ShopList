@@ -34,10 +34,15 @@ namespace ShopList
 
         private void Form2_MouseLeave(object sender, EventArgs e)
         {
-
+            //this.Close();
         }
 
         private void Form2_MouseClick(object sender, MouseEventArgs e)
+        {
+            //this.Close();
+        }
+
+        private void Form2_Deactivate(object sender, EventArgs e)
         {
             this.Close();
         }
